@@ -18,7 +18,7 @@ class RegisterControllerTest extends TestCase
             'password_confirmation' => 'password',
         ]);
 
-        $response->assertStatus(200)
+        $response->assertStatus(201)
                 ->assertJson([
                     'message' => 'Votre compte a été créé avec succès',
                 ]);

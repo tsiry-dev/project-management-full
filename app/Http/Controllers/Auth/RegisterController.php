@@ -18,6 +18,6 @@ class RegisterController extends Controller
         return Response()->json([
             'message' => 'Votre compte a été créé avec succès',
             'user' => new UserResource($user)
-        ]);
+        ],201);
     }
 }
