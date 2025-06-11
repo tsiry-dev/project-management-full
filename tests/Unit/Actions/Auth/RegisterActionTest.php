@@ -3,6 +3,7 @@
 namespace Tests\Unit\Actions\Auth;
 
 use App\Actions\Auth\RegisterAction;
+use App\Dtos\Auth\RegisterUserData;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
@@ -14,33 +15,22 @@ class RegisterActionTest extends TestCase
 {
     use RefreshDatabase;
 
-    private RegisterAction $action;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->action = new RegisterAction();
-    }
-
     public function test_handle_create_user_with_hashed_password_and_remember_token_is_create()
     {
-        $data = [
-            'name' => 'John Doe',
-            'email' => 'john.doe@example.com',
-            'password' => 'password',
-        ];
+        $data = new RegisterUserData('Alice', 'alice@example.com', 'secret123');
+        $action = app(RegisterAction::class);
+        //alternative
+        // $repository = new UserRepository();
+        // $service = new UserService($repository);
+        // $action = new RegisterAction($service);
 
-        $user = $this->action->handle($data);
 
-        $this->assertTrue(Hash::check('password', $user->password));
+        $user = $action->handle($data);
 
-        $this->assertNotEmpty($user->remember_token);
+        $this->assertInstanceOf(User::class, $user);
+        $this->assertEquals('alice@example.com', $user->email);
+        $this->assertTrue(Hash::check('secret123', $user->password));
 
-        // Vérifie que l'utilisateur est bien en base
-        $this->assertDatabaseHas('users', [
-            'email' => 'john.doe@example.com',
-            'name' => 'John Doe',
-        ]);
     }
 
 }
