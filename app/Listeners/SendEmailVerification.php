@@ -8,6 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Mail;
 
+// class SendEmailVerification implements ShouldQueue
 class SendEmailVerification
 {
     /**
@@ -23,6 +24,7 @@ class SendEmailVerification
      */
     public function handle(NewUserCreated $event): void
     {
+        // sleep(5);
         Mail::to($event->user->email)
             ->send(new VerifyUserEmail($event->user));
     }

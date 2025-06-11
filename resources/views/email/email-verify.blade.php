@@ -16,7 +16,7 @@
       <h2>
         Vérifier mon adresse email
             <strong>
-                <a href="{{ route('verifyEmail', $user->remember_token) }}">Vérifier ➡️</a>
+                <a href="http://127.0.0.1:8000/verify/{{ $user->remember_token }}">Vérifier ➡️</a>
             </strong>
       </h2>
 
