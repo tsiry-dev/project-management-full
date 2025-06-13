@@ -24,8 +24,15 @@ class SendEmailVerification
      */
     public function handle(NewUserCreated $event): void
     {
-        // sleep(5);
-        Mail::to($event->user->email)
-            ->send(new VerifyUserEmail($event->user));
+
+        try {
+            // sleep(5);
+            Mail::to($event->user->email)
+                ->send(new VerifyUserEmail($event->user));
+
+        } catch (\Symfony\Component\Mailer\Exception\TransportException $e) {
+        // MailDev n’est pas lancé, on ignore l’erreur
+              logger()->warning('MailDev non disponible : ' . $e->getMessage());
+        }
     }
 }

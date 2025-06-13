@@ -21,7 +21,7 @@ class RegisterController extends Controller
         NewUserCreated::dispatch($user);
 
         return Response()->json([
-            'message' => 'Votre compte a été créé avec succès',
+            'message' => 'Votre compte a été créé avec succès,un email de vérification vous a été envoyé',
             'user' => new UserResource($user)
         ],201);
     }

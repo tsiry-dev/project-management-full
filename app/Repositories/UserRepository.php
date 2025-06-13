@@ -32,4 +32,14 @@ class UserRepository implements UserRepositoryContract
                     'email_verified_at' => now()
                 ]);
     }
+
+    public function findByEmail(string $email): ?User
+    {
+        return User::where('email', $email)->first();
+    }
+
+    public function save(User $user): void
+    {
+        $user->save();
+    }
 }

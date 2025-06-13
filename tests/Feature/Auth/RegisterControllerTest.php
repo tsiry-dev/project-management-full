@@ -9,6 +9,7 @@ use Tests\TestCase;
 
 class RegisterControllerTest extends TestCase
 {
+    use RefreshDatabase;
 
     public function test_register_response_contains_success_message()
     {
@@ -24,7 +25,7 @@ class RegisterControllerTest extends TestCase
 
         $response->assertStatus(201)
                 ->assertJson([
-                    'message' => 'Votre compte a été créé avec succès',
+                    'message' => 'Votre compte a été créé avec succès,un email de vérification vous a été envoyé',
                 ]);
     }
 }

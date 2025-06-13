@@ -2,35 +2,30 @@
 
 namespace App\Actions\Auth;
 
+use App\Contracts\UserRepositoryContract;
 use App\Dtos\Auth\LoginUserDataDTO;
 use App\Dtos\Auth\RegisterUserData;
 use App\Events\NewUserCreated;
 use App\Models\User;
+use App\Services\Auth\LoginValidatorService;
+use App\Services\Auth\PasswordHasherService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
 class LoginAction
 {
+    public function __construct(
+        protected UserRepositoryContract $user,
+        protected LoginValidatorService $loginValidatorService
+    ){}
 
     public function handle(LoginUserDataDTO $data): array
     {
 
-        $user = User::where('email', $data->email)->first();
+        $user = $this->user->findByEmail($data->email);
 
-        if (!$user || !Hash::check($data->password, $user->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['Identifiants incorrects.'],
-            ]);
-        }
-
-        if (!$user->is_valid_email) {
-            NewUserCreated::dispatch($user);
-
-            throw ValidationException::withMessages([
-                'message' => 'Votre compte n\'est pas validé, vérifiez votre email'
-            ]);
-        }
+        $this->loginValidatorService->validate( $user, $data->password);
 
         Auth::login($user);
 
