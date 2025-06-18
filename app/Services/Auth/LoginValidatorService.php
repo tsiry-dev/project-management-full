@@ -8,7 +8,6 @@ use Illuminate\Validation\ValidationException;
 
 class LoginValidatorService
 {
-
     public function __construct(
         protected PasswordHasherService $hasher
     ){}

@@ -6,7 +6,7 @@ use App\Models\Project;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class ProjectStoreRequest extends FormRequest
+class ProjectUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,15 +24,16 @@ class ProjectStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
-            'status' => [
-                'integer',
-                 Rule::in([
-                    Project::NOT_STARTED,
-                    Project::PENDING,
-                    Project::COMPLETED
-                ])
+            'id' => [
+                'required',
+                 Rule::exists('projects', 'id')
             ],
+            'status' => Rule::in([
+                Project::NOT_STARTED,
+                Project::PENDING,
+                Project::COMPLETED
+            ]),
+            'name' => 'required',
             'start_date' => ['required', 'date'],
             'end_date' => ['required', 'date', 'after:start_date'],
         ];
@@ -42,10 +43,10 @@ class ProjectStoreRequest extends FormRequest
     {
         return [
             'name.required' => 'Le nom est obligatoire',
-            'status.required' => 'Le statut est obligatoire',
             'start_date.required' => 'La date de début est obligatoire',
             'end_date.required' => 'La date de fin est obligatoire',
             'start_date.after' => 'La date de début doit être postérieure à la date de fin',
+            'id.exists' => 'Le projet que vous modifier n\'existe pas',
             'status.in' => 'Le statut doit être un des statuts disponibles (0, 1, 2)',
         ];
     }

@@ -2,7 +2,9 @@
 
 namespace App\Dtos\Projects;
 
-class ProjectDataDTO
+use App\Models\Project;
+
+class UpdateDTO
 {
     /**
      * Create a new class instance.
@@ -11,6 +13,8 @@ class ProjectDataDTO
         public readonly string $name,
         public readonly string $start_date,
         public readonly string $end_date,
+        public readonly ?int $status,
+        public readonly ?int $id,
     ){}
 
     public static function fromArray(array $data): self
@@ -19,6 +23,10 @@ class ProjectDataDTO
             $data['name'],
             $data['start_date'],
             $data['end_date'],
+            $data['status'] ?? Project::NOT_STARTED,
+            $data['id'],
         );
     }
+
+
 }

@@ -10,7 +10,9 @@ Route::post('/register', [RegisterController::class, 'register'])->name('registe
 
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 
+Route::get('/projects', [ProjectController::class, 'index'])->name('projects.index');
 Route::post('/projects', [ProjectController::class, 'store'])->name('projects.store');
+Route::put('/projects', [ProjectController::class, 'update'])->name('projects.update');
 
 
 Route::get('/user', function (Request $request) {

@@ -19,10 +19,9 @@ class ProjectTest extends TestCase
     {
         // 1. Préparation des données via DTO
         $dto = new ProjectDataDTO(
-            name: 'Project Test',
-            status: Project::NOT_STARTED,
-            start_date: '2025-06-13',
-            end_date: '2025-06-14'
+            'Project Test',
+            '2025-06-13',
+            '2025-06-14'
         );
 
         // 2. Création d’un faux repository avec Mockery
@@ -36,7 +35,6 @@ class ProjectTest extends TestCase
                  ->with($dto)
                  ->andReturn(new Project([
                      'name' => $dto->name,
-                     'status' => $dto->status,
                      'start_date' => $dto->start_date,
                      'end_date' => $dto->end_date,
                  ]));

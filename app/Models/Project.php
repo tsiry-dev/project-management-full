@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Project extends Model
 {
@@ -22,4 +23,9 @@ class Project extends Model
        'start_date',
        'end_date',
     ];
+
+    public function task_progress(): HasOne
+    {
+        return $this->hasOne(TaskProgress::class, 'project_id');
+    }
 }
