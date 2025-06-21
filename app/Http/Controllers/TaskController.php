@@ -4,15 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Actions\Tasks\TaskStoreAction;
 use App\Actions\Tasks\TaskUpdateStatuAction;
-use App\Actions\Tasks\TaskUpdateStatuToCompletedAction;
-use App\Actions\Tasks\TaskUpdateStatuToNotStartedAction;
-use App\Actions\Tasks\TaskUpdateStatuToPendingAction;
 use App\Dtos\Tasks\TaskStoreDTO;
 use App\Http\Requests\Tasks\TaskStoreRequest;
 use App\Http\Requests\Tasks\TaskUpdateStatusRequest;
 use App\Models\Task;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
