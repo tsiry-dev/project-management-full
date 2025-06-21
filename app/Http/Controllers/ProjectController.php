@@ -5,26 +5,29 @@ namespace App\Http\Controllers;
 use App\Actions\Projects\ProjectAllAction;
 use App\Actions\Projects\ProjectStoreAction;
 use App\Actions\Projects\UpdateAction;
+use App\Actions\TaskProgress\PinnedTaskProgressAction;
 use App\Dtos\Projects\ProjectDataDTO;
 use App\Dtos\Projects\UpdateDTO;
 use App\Http\Requests\Projects\ProjectStoreRequest;
 use App\Http\Requests\Projects\ProjectUpdateRequest;
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ProjectController extends Controller
 {
 
-    public function index(ProjectAllAction $action)
+    public function index(Request $request, ProjectAllAction $action)
     {
-        $projects = $action->handle();
+
+        $search = $request->query('search');
+        $projects = $action->handle($search);
 
         return response()->json([
             'message' => 'Les projets sont récupérés avec succès',
             'data' => $projects
-        ]);
+        ],200);
     }
-
 
     public function store(ProjectStoreRequest $request, ProjectStoreAction $action)
     {
@@ -43,6 +46,22 @@ class ProjectController extends Controller
         return response()->json([
            'message' => 'Le projet a été mis à jour avec succès',
            'project' => $project
-        ]);
+        ],201);
+    }
+
+    public function pinned(Request $request,PinnedTaskProgressAction $action)
+    {
+          $id = $request->id;
+          $success = $action->handle($id);
+
+          if(!$success) {
+             return response()->json([
+                'message' => 'Le projet n\'existe pas',
+             ],Response::HTTP_NOT_FOUND);
+          }
+
+          return response()->json([
+            'message' => 'La progression a été épinglé',
+          ],201);
     }
 }

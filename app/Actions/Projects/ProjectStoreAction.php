@@ -3,6 +3,7 @@
 namespace App\Actions\Projects;
 
 use App\Dtos\Projects\ProjectDataDTO;
+use App\Models\Project;
 use App\Services\Projects\ProjectService;
 
 class ProjectStoreAction
@@ -14,7 +15,7 @@ class ProjectStoreAction
         protected ProjectService $service
     ) {}
 
-    public function handle(ProjectDataDTO $data)
+    public function handle(ProjectDataDTO $data): Project
     {
         return $this->service->store($data);
     }

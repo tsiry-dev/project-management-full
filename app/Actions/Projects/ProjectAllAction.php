@@ -11,8 +11,8 @@ class ProjectAllAction
         protected ProjectRepository $projectRepository
     ){}
 
-    public function handle(): LengthAwarePaginator
+    public function handle(?string $search = null): LengthAwarePaginator
     {
-         return $this->projectRepository->getAllWithRelation();
+         return $this->projectRepository->getAllWithRelation($search);
     }
 }
