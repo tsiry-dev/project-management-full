@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Projects\ProjectAllAction;
+use App\Actions\Projects\ProjectFindAction;
 use App\Actions\Projects\ProjectStoreAction;
 use App\Actions\Projects\UpdateAction;
 use App\Actions\TaskProgress\PinnedTaskProgressAction;
@@ -11,7 +12,9 @@ use App\Dtos\Projects\UpdateDTO;
 use App\Http\Requests\Projects\ProjectStoreRequest;
 use App\Http\Requests\Projects\ProjectUpdateRequest;
 use App\Models\Project;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Symfony\Component\HttpFoundation\Response;
 
 class ProjectController extends Controller
@@ -27,6 +30,22 @@ class ProjectController extends Controller
             'message' => 'Les projets sont récupérés avec succès',
             'data' => $projects
         ],200);
+    }
+
+    public function show(ProjectFindAction $action, string $slug): JsonResponse
+    {
+        $project = $action->handle($slug);
+
+        if (!$project) {
+            return response()->json([
+                'message' => 'Le projet que vous cherchez n\'existe pas.'
+            ], 404);
+        }
+
+        return response()->json([
+            'message' => 'Le projet a été récupéré avec succès',
+            'project' => $project
+        ], 200);
     }
 
     public function store(ProjectStoreRequest $request, ProjectStoreAction $action)
@@ -63,5 +82,12 @@ class ProjectController extends Controller
           return response()->json([
             'message' => 'La progression a été épinglé',
           ],201);
+    }
+
+    public function count()
+    {
+        return response()->json([
+            'count' => Project::count()
+        ],200);
     }
 }

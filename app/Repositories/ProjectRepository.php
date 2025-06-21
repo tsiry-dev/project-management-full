@@ -38,6 +38,13 @@ class ProjectRepository implements ProjectRepositoryContract
         });
     }
 
+    public function find(string $slug): ?Project
+    {
+         $project = Project::where('projects.slug', $slug)->first();
+         $project->load(['tasks.task_members.member']);
+         return $project;
+    }
+
     public function getAllWithRelation(?string $search = null): LengthAwarePaginator
     {
          $query = Project::with(['task_progress']);

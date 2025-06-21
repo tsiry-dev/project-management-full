@@ -34,4 +34,12 @@ class TaskRepository
             return $task;
          });
     }
+
+    public function updateStatus(int $taskId, int $status): Task
+    {
+        $task = Task::findOrFail($taskId);
+        $task->status = $status;
+        $task->save();
+        return $task;
+    }
 }
